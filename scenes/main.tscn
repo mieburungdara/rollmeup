@@ -9,7 +9,7 @@ colors = PackedColorArray(1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="TileTexture"]
 gradient = SubResource("Gradient_1")
-width = 80
+width = 96
 height = 16
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1"]
@@ -24,6 +24,8 @@ texture = SubResource("TileTexture")
 3:0/0/modulate = Color(0.5, 0.5, 0.5, 1)
 4:0/0 = 0
 4:0/0/modulate = Color(0.2, 0.5, 0.9, 1)
+5:0/0 = 0
+5:0/0/modulate = Color(0.55, 0.4, 0.3, 1)
 
 [sub_resource type="TileSet" id="TileSet_1"]
 tile_size = Vector2i(16, 16)
@@ -66,6 +68,10 @@ text = "Ocean"
 [node name="SandBtn" type="Button" parent="UI/Panel/HBox"]
 layout_mode = 2
 text = "Sand"
+
+[node name="DirtBtn" type="Button" parent="UI/Panel/HBox"]
+layout_mode = 2
+text = "Dirt"
 
 [node name="GrassBtn" type="Button" parent="UI/Panel/HBox"]
 layout_mode = 2
@@ -137,6 +143,7 @@ autowrap_mode = 3
 
 [connection signal="pressed" from="UI/Panel/HBox/OceanBtn" to="." method="set_current_element" binds= [0]]
 [connection signal="pressed" from="UI/Panel/HBox/SandBtn" to="." method="set_current_element" binds= [1]]
+[connection signal="pressed" from="UI/Panel/HBox/DirtBtn" to="." method="set_current_element" binds= [5]]
 [connection signal="pressed" from="UI/Panel/HBox/GrassBtn" to="." method="set_current_element" binds= [2]]
 [connection signal="pressed" from="UI/Panel/HBox/MtnBtn" to="." method="set_current_element" binds= [3]]
 [connection signal="pressed" from="UI/Panel/HBox/UnitBtn" to="." method="set_current_element" binds= [100]]
