@@ -1,0 +1,9 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1767634128
+::res://assets/::1767633634
+::res://assets/tilesets/::1767633634
+::res://scenes/::1767633668
+main.tscn::PackedScene::-1::1767633668::0::1::::<><><>0<>0<><>::res://scripts/world_manager.gd<>res://scripts/camera.gd
+::res://scripts/::1767633654
+camera.gd::GDScript::8227089735966578661::1767633654::0::1::::<>Camera2D<><>0<>0<><>::
+world_manager.gd::GDScript::2467309623135474172::1767633675::0::1::::<>Node2D<><>0<>0<><>::
