@@ -38,7 +38,7 @@ static func get_units_in_range(manager: Node2D, pos, radius):
 	return res
 
 
-static func spawn_unit(manager: Node2D, pos: Vector2, type: int) -> void:
+static func spawn_unit(manager: Node2D, pos: Vector2, type: int) -> CharacterBody2D:
 	var unit = manager.unit_scene.instantiate()
 	unit.position = pos
 	if type == Element.SPAWN_KINGDOM_A:
@@ -57,10 +57,21 @@ static func spawn_unit(manager: Node2D, pos: Vector2, type: int) -> void:
 	unit.unit_unhovered.connect(manager._on_unit_unhovered)
 	manager.add_child(unit)
 	register_unit(manager, unit)
+	return unit
 
 
 static func spawn_starting_units(manager: Node2D):
 	var center = Vector2(manager.grid_size) / 2.0
+
+	# Taruh Gerobak 2x2 di tengah
+	var cx = int(center.x)
+	var cy = int(center.y)
+	if manager._is_in_bounds(cx + 1, cy + 1):
+		manager._set_cell(cx, cy, 17)  # TL
+		manager._set_cell(cx + 1, cy, 18)  # TR
+		manager._set_cell(cx, cy + 1, 19)  # BL
+		manager._set_cell(cx + 1, cy + 1, 20)  # BR
+
 	var count = 0
 	# Daftar ubin rumput yang boleh ditempati
 	var grass_tiles = [
@@ -71,7 +82,8 @@ static func spawn_starting_units(manager: Node2D):
 	]
 
 	for i in range(500):
-		var test_pos = center + Vector2(randf_range(-15, 15), randf_range(-15, 15))
+		# Spawn di sekitar gerobak (radius 2-3 ubin)
+		var test_pos = center + Vector2(randf_range(-3, 3), randf_range(-3, 3))
 		var tx = int(test_pos.x)
 		var ty = int(test_pos.y)
 
@@ -80,7 +92,10 @@ static func spawn_starting_units(manager: Node2D):
 			# Pastikan ubin adalah rumput DAN tidak ada rintangan di PropLayer
 			if tile in grass_tiles:
 				if manager.prop_map.get_cell_source_id(Vector2i(tx, ty)) == -1:
-					spawn_unit(manager, test_pos * 32.0, Element.SPAWN_KINGDOM_A)
+					var u = spawn_unit(manager, test_pos * 32.0, Element.SPAWN_KINGDOM_A)
+					if is_instance_valid(u):
+						u.home_position = center * 32.0
+						u.max_wander_distance = 120.0
 					count += 1
 					if count >= 3:
 						break

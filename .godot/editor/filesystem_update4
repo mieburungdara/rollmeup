@@ -24,3 +24,7 @@ res://scripts/core/world_generator.gd
 res://scripts/core/world_persistence.gd
 res://scripts/core/world_tile_logic.gd
 res://scripts/core/world_ui_logic.gd
+res://scripts/entities/unit/unit_ai_logic.gd
+res://scripts/entities/unit/unit_combat_logic.gd
+res://scripts/entities/unit/unit_initializer.gd
+res://scripts/ui/floating_text.gd

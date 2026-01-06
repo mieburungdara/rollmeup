@@ -26,43 +26,39 @@ func generate_part_atlas(path: String, w: int, h: int, count: int, draw_func: Ca
     img.save_png(path)
 
 
-# --- FUNGSI MENGGAMBAR POTONGAN (32x32) ---
-
-
 func _draw_head_variant(img: Image, offset: int, variant: int):
     var base = Color.WHITE
     _draw_rect_custom(img, offset + 11, 4, 10, 10, base)
-
-    if variant == 1:  # ELF: Telinga Runcing
+    if variant == 1:
         img.set_pixel(offset + 10, 7, base)
         img.set_pixel(offset + 9, 6, base)
         img.set_pixel(offset + 21, 7, base)
         img.set_pixel(offset + 22, 6, base)
-    elif variant == 2:  # ORC: Taring Bawah
+    elif variant == 2:
         img.set_pixel(offset + 13, 13, Color.WHITE)
         img.set_pixel(offset + 18, 13, Color.WHITE)
-    elif variant == 3:  # DWARF: Lebih Lebar/Kotak
+    elif variant == 3:
         _draw_rect_custom(img, offset + 10, 5, 12, 9, base)
-    elif variant == 4:  # MONSTER
+    elif variant == 4:
         _draw_rect_custom(img, offset + 12, 3, 8, 11, base)
 
 
 func _draw_eyes_variant(img: Image, offset: int, variant: int):
     var c = Color.BLACK
-    if variant == 0:  # Bulat
+    if variant == 0:
         img.set_pixel(offset + 13, 9, c)
         img.set_pixel(offset + 18, 9, c)
-    elif variant == 1:  # Sipit
+    elif variant == 1:
         img.set_pixel(offset + 13, 9, c)
         img.set_pixel(offset + 14, 9, c)
         img.set_pixel(offset + 17, 9, c)
         img.set_pixel(offset + 18, 9, c)
-    elif variant == 2:  # Marah
+    elif variant == 2:
         img.set_pixel(offset + 13, 9, c)
         img.set_pixel(offset + 18, 9, c)
         img.set_pixel(offset + 12, 8, c)
         img.set_pixel(offset + 19, 8, c)
-    else:  # Kilau
+    else:
         img.set_pixel(offset + 13, 9, c)
         img.set_pixel(offset + 13, 8, Color.WHITE)
         img.set_pixel(offset + 18, 9, c)
@@ -112,9 +108,6 @@ func _draw_hair_variant(img: Image, offset: int, variant: int):
         _draw_rect_custom(img, offset + 11, 3, 10, 1, base)
 
 
-# --- UTILITY ---
-
-
 func _draw_rect_custom(img: Image, x: int, y: int, w: int, h: int, color: Color):
     for i in range(x, x + w):
         for j in range(y, y + h):
@@ -123,7 +116,8 @@ func _draw_rect_custom(img: Image, x: int, y: int, w: int, h: int, color: Color)
 
 
 func generate_world_atlas(path: String):
-    var img = Image.create(544, 32, false, Image.FORMAT_RGBA8)
+    # Perluas atlas untuk menampung 21 ubin (32*21 = 672)
+    var img = Image.create(672, 32, false, Image.FORMAT_RGBA8)
     var c_grass = Color(0.3, 0.6, 0.25)
 
     _fill_tile(img, 0, Color(0.1, 0.35, 0.7))
@@ -148,7 +142,60 @@ func generate_world_atlas(path: String):
 
     _draw_corpse_marker(img, 15)
     _draw_black_tile(img, 16)
+    _draw_mega_wagon(img, 17)
+    _draw_hut(img, 21)
     img.save_png(path)
+
+
+func _draw_hut(img: Image, idx: int):
+    var offset = idx * 32
+    var c_wood = Color(0.35, 0.2, 0.1)
+    var c_tent = Color(0.6, 0.5, 0.4)  # Warna kain kusam
+    # Atap Segitiga (Kemah)
+    for y in range(5, 15):
+        var w = (y - 5) * 1.5
+        _draw_rect_custom(img, offset + 16 - w / 2, y, w, 1, c_tent)
+    # Tiang Kayu depan
+    _draw_rect_custom(img, offset + 15, 15, 2, 12, c_wood)
+    # Pintu Masuk
+    _draw_rect_custom(img, offset + 14, 20, 4, 7, Color(0.1, 0.05, 0))
+
+
+func _draw_mega_wagon(img: Image, start_idx: int):
+    var c_wood = Color(0.3, 0.15, 0.05)
+    var c_wood_lt = Color(0.5, 0.35, 0.2)
+    var c_canvas = Color(0.75, 0.7, 0.6)
+    var c_canvas_dk = Color(0.5, 0.45, 0.4)
+    var c_iron = Color(0.1, 0.1, 0.15)
+
+# --- ATAS (17 & 18) ---
+    var tl = start_idx * 32
+    _draw_rect_custom(img, tl + 8, 5, 24, 20, c_canvas)
+    for i in range(6):
+        img.set_pixel(tl + 8 + i, 5 + i, Color(0, 0, 0, 0))
+    var tr = (start_idx + 1) * 32
+    _draw_rect_custom(img, tr, 5, 22, 20, c_canvas)
+    for y in range(5, 25):
+        img.set_pixel(tr + 5, y, c_canvas_dk)
+        img.set_pixel(tr + 15, y, c_canvas_dk)
+
+# --- BAWAH (19 & 20) ---
+    var bl = (start_idx + 2) * 32
+    _draw_rect_custom(img, bl + 8, 0, 24, 12, c_wood)
+    _draw_circle(img, bl + 16, 15, 10, c_iron)
+    _draw_circle(img, bl + 16, 15, 8, c_wood)
+    _draw_rect_custom(img, bl + 15, 14, 3, 3, c_iron)
+
+    var br = (start_idx + 3) * 32
+    _draw_rect_custom(img, br, 0, 18, 12, c_wood)
+    _draw_rect_custom(img, br + 5, 12, 12, 4, c_iron)
+    _draw_rect_custom(img, br + 18, 8, 14, 2, c_wood)
+    img.set_pixel(br + 31, 8, c_wood_lt)
+
+    for x in range(8, 32):
+        img.set_pixel(bl + x, 5, Color.BLACK)
+    for x in range(0, 18):
+        img.set_pixel(br + x, 5, Color.BLACK)
 
 
 func _draw_black_tile(img: Image, idx: int):
@@ -195,7 +242,7 @@ func _draw_circle(img: Image, cx: int, cy: int, radius: int, color: Color):
     for x in range(cx - radius, cx + radius):
         for y in range(cy - radius, cy + radius):
             if Vector2(x, y).distance_to(Vector2(cx, cy)) < radius:
-                if x >= 0 and x < img.get_width() and y >= 0 and y < 32:
+                if x >= 0 and x < 672 and y >= 0 and y < 32:
                     img.set_pixel(x, y, color)
 
 

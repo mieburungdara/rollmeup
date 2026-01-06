@@ -48,6 +48,14 @@ static func setup_button_icons(manager: Node2D):
 		tex.region = Rect2(terrain[b] * 32, 0, 32, 32)
 		b.icon = tex
 		b.expand_icon = true
+
+	# Icon for Hut
+	var hut_tex = AtlasTexture.new()
+	hut_tex.atlas = atlas
+	hut_tex.region = Rect2(21 * 32, 0, 32, 32)
+	manager.hut_btn.icon = hut_tex
+	manager.hut_btn.expand_icon = true
+
 	manager.k_blue_btn.icon = load("res://assets/human_male_0.png")
 	manager.k_red_btn.icon = load("res://assets/human_male_0.png")
 	manager.monster_btn.icon = load("res://assets/orc.png")

@@ -8,7 +8,9 @@ extends Node2D
 
 # --- UI REFERENSI ---
 @onready var ui_panel = $UI/Panel
+@onready var brush_panel = $UI/BrushPanel
 @onready var inspector_panel = $UI/InspectorPanel
+@onready var options_window = $UI/OptionsWindow
 @onready var date_label = $UI/TimePanel/DateLabel
 @onready var save_btn = $UI/EditorActions/SaveBtn
 @onready var name_label = $UI/InspectorPanel/VBox/NameLabel
@@ -30,6 +32,7 @@ extends Node2D
 @onready var k_blue_btn = $UI/Panel/HBox/K_Blue
 @onready var k_red_btn = $UI/Panel/HBox/K_Red
 @onready var monster_btn = $UI/Panel/HBox/Monster
+@onready var hut_btn = $UI/Panel/HBox/HutBtn
 
 # --- KONSTANTA & HELPER ---
 const Generator = preload("res://scripts/core/world_generator.gd")
@@ -56,6 +59,11 @@ enum Element {
     TREE_FRUIT = 14,
     CORPSE = 15,
     FOG = 16,
+    WAGON_TL = 17,
+    WAGON_TR = 18,
+    WAGON_BL = 19,
+    WAGON_BR = 20,
+    HUT = 21,
     SPAWN_KINGDOM_A = 100,
     SPAWN_KINGDOM_B = 101,
     SPAWN_MONSTER = 102
@@ -64,7 +72,7 @@ enum Element {
 # --- STATE ---
 var grid_size := GameSettings.map_size
 var grid := []
-var current_element: int = Element.SAND
+var current_element: int = -1
 var brush_size := 1
 var is_world_ready := false
 var is_mouse_on_ui := false
@@ -117,7 +125,7 @@ func _process(delta: float) -> void:
     if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
         if get_viewport().gui_get_hovered_control() == null:
             selected_unit = null
-        if not is_mouse_on_ui:
+        if not is_mouse_on_ui and current_element != -1:
             TileLogic.paint_brush(
                 self,
                 tile_map.local_to_map(get_global_mouse_position()).x,
@@ -326,7 +334,8 @@ func _update_button_visuals():
         mtn_btn: 3,
         k_blue_btn: 100,
         k_red_btn: 101,
-        monster_btn: 102
+        monster_btn: 102,
+        hut_btn: 21
     }
     for b in btns:
         b.modulate = Color(1, 1, 0.5) if current_element == btns[b] else Color(0.6, 0.6, 0.6)
@@ -355,12 +364,27 @@ func _on_unit_hovered(u):
 
 func _on_unit_unhovered():
     hovered_unit = null
+
     if selected_unit == null:
         inspector_panel.visible = false
 
 
+func _on_toggle_editor_pressed():
+    ui_panel.visible = !ui_panel.visible
+
+    brush_panel.visible = ui_panel.visible
+
+
+func _on_options_pressed():
+    options_window.visible = !options_window.visible
+
+
 func _on_exit_pressed():
     get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+
+
+func _on_quit_pressed():
+    get_tree().quit()
 
 
 func _get_visible_chunks_rect():

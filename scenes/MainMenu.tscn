@@ -66,8 +66,7 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 4
 theme_override_font_sizes/font_size = 48
-text = "Payon
-Sim"
+text = "Ini Gmae"
 horizontal_alignment = 1
 
 [node name="NewGameBtn" type="Button" parent="VBox"]
@@ -76,7 +75,7 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_Normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_Hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_Pressed")
-text = "Enter Village"
+text = "New gem"
 
 [node name="EditorBtn" type="Button" parent="VBox"]
 custom_minimum_size = Vector2(0, 50)
@@ -84,7 +83,7 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_Normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_Hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_Pressed")
-text = "Map Editor"
+text = "Map Edit"
 
 [node name="AboutBtn" type="Button" parent="VBox"]
 custom_minimum_size = Vector2(0, 50)
