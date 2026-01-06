@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Normal"]
 bg_color = Color(0.2, 0.4, 0.8, 1)
@@ -66,8 +66,8 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 4
 theme_override_font_sizes/font_size = 48
-text = "RollMeUp
-World"
+text = "Payon
+Sim"
 horizontal_alignment = 1
 
 [node name="NewGameBtn" type="Button" parent="VBox"]
@@ -76,15 +76,15 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_Normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_Hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_Pressed")
-text = "New Game"
+text = "Enter Village"
 
-[node name="SettingsBtn" type="Button" parent="VBox"]
+[node name="EditorBtn" type="Button" parent="VBox"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_Normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_Hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_Pressed")
-text = "Settings"
+text = "Map Editor"
 
 [node name="AboutBtn" type="Button" parent="VBox"]
 custom_minimum_size = Vector2(0, 50)
@@ -101,17 +101,64 @@ theme_override_colors/font_color = Color(1, 0.5, 0.5, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_Normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_Hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_Pressed")
-text = "Quit"
+text = "Exit"
 
 [node name="AboutPopup" type="AcceptDialog" parent="."]
 title = "About"
 initial_position = 2
 size = Vector2i(300, 150)
-dialog_text = "RollMeUp World Clone
-Created with Godot 4.
-A simple simulation game."
+dialog_text = "Payon Village Simulation.
+A fixed map simulation game."
 
+[node name="MapSizePopup" type="Window" parent="."]
+title = "New Game - Choose Map"
+initial_position = 2
+size = Vector2i(350, 300)
+visible = false
+exclusive = true
+
+[node name="EditorMapPopup" type="Window" parent="."]
+title = "Map Editor - Choose Template"
+initial_position = 2
+size = Vector2i(350, 250)
+visible = false
+exclusive = true
+
+[node name="Panel" type="PanelContainer" parent="EditorMapPopup"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="EditorMapPopup/Panel"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="EditorMapPopup/Panel/VBox"]
+layout_mode = 2
+text = "Select template to edit:"
+horizontal_alignment = 1
+
+[node name="BlankBtn" type="Button" parent="EditorMapPopup/Panel/VBox"]
+layout_mode = 2
+text = "Blank Canvas"
+
+[node name="CityEditBtn" type="Button" parent="EditorMapPopup/Panel/VBox"]
+layout_mode = 2
+text = "City Template"
+
+[node name="PayonEditBtn" type="Button" parent="EditorMapPopup/Panel/VBox"]
+layout_mode = 2
+text = "Payon Template"
+
+[node name="Panel" type="PanelContainer" parent="MapSizePopup"]
+
+[connection signal="pressed" from="EditorMapPopup/Panel/VBox/BlankBtn" to="." method="_open_editor" binds= [0]]
+[connection signal="pressed" from="EditorMapPopup/Panel/VBox/CityEditBtn" to="." method="_open_editor" binds= [1]]
+[connection signal="pressed" from="EditorMapPopup/Panel/VBox/PayonEditBtn" to="." method="_open_editor" binds= [2]]
 [connection signal="pressed" from="VBox/NewGameBtn" to="." method="_on_new_game_pressed"]
-[connection signal="pressed" from="VBox/SettingsBtn" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="VBox/EditorBtn" to="." method="_on_editor_pressed"]
 [connection signal="pressed" from="VBox/AboutBtn" to="." method="_on_about_pressed"]
 [connection signal="pressed" from="VBox/QuitBtn" to="." method="_on_quit_pressed"]

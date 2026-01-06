@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1jsueyqv0adn"]
+
+[ext_resource type="Texture2D" uid="uid://cbcqxubfb8lom" path="res://assets/ChatGPT Image Jan 6, 2026, 08_46_26 AM.png" id="1_wpa4r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ncq5k"]
+atlas = ExtResource("1_wpa4r")
+region = Rect2(376, 138, 280, 384)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2w2i5"]
+atlas = ExtResource("1_wpa4r")
+region = Rect2(96, 138, 280, 384)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_evkur"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ncq5k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2w2i5")
+}],
+"loop": true,
+"name": &"jalan",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_evkur")
+animation = &"jalan"
